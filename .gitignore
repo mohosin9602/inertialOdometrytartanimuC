@@ -1,0 +1,32 @@
+TartanIMU/
+.DS_Store
+data/raw/
+data/processed/
+checkpoints/
+logs/
+*.pth
+*.pt
+*.ckpt
+__pycache__/
+.ipynb_checkpoints/
+mySolution/runs/*.log
+*.zip
+mySolution/.venv/
+
+# Keep only these two runs; ignore everything else under runs/
+mySolution/runs/*
+!mySolution/runs/20260919-m23-phase-seed42-d8c05965/
+!mySolution/runs/20260919-m23-phase-seed42-d8c05965/**
+!mySolution/runs/20260919-m23-phase-trainval-seed42-b8e7089e/
+!mySolution/runs/20260919-m23-phase-trainval-seed42-b8e7089e/**
+
+# Keeping these folders tracked but empty/
+
+mySolution/notebooks/*
+!mySolution/notebooks/.gitkeep
+!mySolution/notebooks/kaggle_m23_phase.ipynb
+!mySolution/notebooks/kaggle_m23_phase_trainval.ipynb
+mySolution/data/*
+!mySolution/data/.gitkeep
+mySolution/tests/*
+!mySolution/tests/.gitkeep

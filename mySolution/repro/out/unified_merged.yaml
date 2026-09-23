@@ -1,0 +1,107 @@
+port: 13914
+seeds:
+  use_seeds: true
+  id: 42
+data:
+  dataset: AirLab
+  data_path:
+    car: <PATH_TO_DATA>/car
+    dog: <PATH_TO_DATA>/dog
+    drone: <PATH_TO_DATA>/drone_v3
+    human: <PATH_TO_DATA>/human
+  use_local_coord: true
+  max_v_norm:
+    drone: 25.0
+    default: 5.0
+  clip_max_speed:
+    drone: 25.0
+    default: 15.0
+  train_dir: train
+  test_dir: test
+  validation_dir: val
+  random_partition: false
+  data_rate: 1.0
+  train_rate: 0.7
+  test_rate: 0.15
+  valid_rate: 0.15
+  imu_freq: 200.0
+  sample_freq: 40
+  gravity_alignment:
+    enabled: false
+    magnitude: 9.8101
+    direction:
+    - 0
+    - 0
+    - -1
+    enable_validation: false
+    visualize: false
+augment:
+  feat_acc_sigma: 0.0001
+  feat_gyr_sigma: 1.0e-05
+  add_bias_noise: true
+  accel_bias_range: 0.1
+  gyro_bias_range: 0.002
+  add_gravity_noise: true
+  gravity_noise_theta_range: 5
+model:
+  model_name: Foundation_Model
+  model_yaml: /Users/mohosinmahmud/.cache/huggingface/hub/models--Tartan-IMU--TartanIMU/snapshots/556a9e89c85d35ad83b7d05c852194165a6601cd/config/resnet_lstm_multihead.yaml
+  pred_velocity: true
+  adapter: false
+train:
+  out_dir: <OUTPUT_DIR>/unified_dronev3
+  use_pretrain_model: false
+  use_multi_gpu: false
+  use_amp: true
+  batch_size: 512
+  epochs: 150
+  start_cov_epochs: 200
+  n_workers: 4
+  seq_len: 10
+  predict_start: 0
+  predict_end: 10
+  add_noise: true
+  active_heads:
+  - car
+  - dog
+  - drone
+  - human
+  optimizer:
+    learning_rate: 0.0001
+    method: Adam
+    weight_decay: 0.01
+  scheduler:
+    factor: 0.1
+    patience: 8
+val:
+  batch_size: 512
+  n_workers: 2
+test:
+  out_dir: <OUTPUT_DIR>/unified_dronev3_test
+  n_workers: 2
+schemes:
+  train: true
+  test: false
+  online_adaption: false
+active_heads:
+- car
+- dog
+- drone
+- human
+model_param:
+  input_dim: 6
+  output_dim: 3
+  split_z: true
+  past_time: 0.0
+  window_time: 1.0
+  future_time: 0.0
+  layer_sizes:
+  - 2
+  - 2
+  - 2
+  - 2
+  drop_ratio: 0.3
+  lstm_size: 128
+  lstm_layers: 2
+  lstm_dropout: 0.1
+  use_transformer: false

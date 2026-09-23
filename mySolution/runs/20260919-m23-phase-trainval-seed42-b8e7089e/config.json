@@ -1,0 +1,218 @@
+{
+  "config": {
+    "augment": {
+      "ops": [
+        "timescale"
+      ],
+      "timescale": {
+        "fc_hz": 8.0,
+        "p": {
+          "car": 0.0,
+          "dog": 0.0,
+          "drone": 0.5,
+          "human": 0.0
+        },
+        "phase_p": {
+          "car": 1.0,
+          "dog": 1.0,
+          "drone": 1.0,
+          "human": 1.0
+        },
+        "recipe": "timescale_drone",
+        "s_range": {
+          "car": [
+            1.0,
+            1.0
+          ],
+          "dog": [
+            1.0,
+            1.0
+          ],
+          "drone": [
+            1.0,
+            1.4
+          ],
+          "human": [
+            1.0,
+            1.0
+          ]
+        },
+        "split_box_seconds": 5.0
+      }
+    },
+    "cond": {
+      "classifier_ckpt": null,
+      "corruption_rate": 0.0,
+      "source": "learned"
+    },
+    "data": {
+      "batch_size": 4,
+      "buckets": [
+        64
+      ],
+      "chunk_len": 64,
+      "chunk_stride": 64,
+      "exclude_seal": false,
+      "extra_scalars": [],
+      "input_repr": "body_grav",
+      "normalization": "dataset_fixed",
+      "snap_to_segments": false,
+      "splits": [
+        "val"
+      ],
+      "train_extra": [
+        "val"
+      ],
+      "train_split": "train"
+    },
+    "eval": {
+      "cadence": "end",
+      "seal": false,
+      "select_on": "none",
+      "splits": [
+        "val"
+      ],
+      "write_submission": true
+    },
+    "loss": {
+      "terms": [
+        {
+          "name": "ave",
+          "weight": 0.8156180650085953
+        },
+        {
+          "enabled": false,
+          "name": "ate20",
+          "weight": 0.12836856250429332
+        },
+        {
+          "name": "platform",
+          "weight": 0.1
+        }
+      ]
+    },
+    "model": {
+      "conditioner": {
+        "insert_at": [],
+        "mode": "film"
+      },
+      "context": {
+        "direction": "bidirectional",
+        "mode": "bigru"
+      },
+      "dropout": 0.1,
+      "embodiment": {
+        "pool": "mean",
+        "width": 32
+      },
+      "encoder": {
+        "d_model": 256,
+        "mode": "cnn_small"
+      },
+      "heads": {
+        "platform": true,
+        "velocity": true
+      },
+      "kind": "two_stage"
+    },
+    "optim": {
+      "amp": false,
+      "ema_decay": 0.999,
+      "epochs": 150,
+      "grad_clip": 1.0,
+      "lr": 0.0003,
+      "patience": 20,
+      "schedule": "cosine",
+      "warmup_fraction": 0.05,
+      "weight_decay": 0.01
+    },
+    "post": {
+      "ops": [
+        "stitch"
+      ],
+      "stitch": {
+        "weighting": "uniform"
+      }
+    },
+    "prep": {
+      "gravity": {
+        "source": "filter"
+      },
+      "orientation": {
+        "adaptive": false,
+        "gains": {},
+        "mode": "none"
+      },
+      "segments": {
+        "enabled": false
+      }
+    },
+    "run": {
+      "device": "cuda",
+      "diagnostic_only": false,
+      "milestone": "D9",
+      "name": "m23-phase-trainval-seed42",
+      "notes": "D9b + M23 SUBMISSION: m9_film + timescale_drone (p 0.5, s 1.0-1.4) + window-phase jitter on all platforms, trained on train + seal + val, nothing held out, final EMA weights kept.",
+      "seed_augment": 42,
+      "seed_data": 42,
+      "seed_weights": 42
+    },
+    "sampler": {
+      "mode": "platform_balanced",
+      "platform_weights": null,
+      "within_platform_weighting": "none"
+    }
+  },
+  "config_diff": {
+    "augment.ops": [
+      "timescale"
+    ],
+    "augment.timescale": {
+      "fc_hz": 8.0,
+      "p": {
+        "car": 0.0,
+        "dog": 0.0,
+        "drone": 0.5,
+        "human": 0.0
+      },
+      "phase_p": {
+        "car": 1.0,
+        "dog": 1.0,
+        "drone": 1.0,
+        "human": 1.0
+      },
+      "recipe": "timescale_drone",
+      "s_range": {
+        "car": [
+          1.0,
+          1.0
+        ],
+        "dog": [
+          1.0,
+          1.0
+        ],
+        "drone": [
+          1.0,
+          1.4
+        ],
+        "human": [
+          1.0,
+          1.0
+        ]
+      },
+      "split_box_seconds": 5.0
+    },
+    "data.exclude_seal": false,
+    "data.train_extra": [
+      "val"
+    ],
+    "eval.select_on": "none",
+    "run.device": "cuda",
+    "run.milestone": "D9",
+    "run.name": "m23-phase-trainval-seed42",
+    "run.notes": "D9b + M23 SUBMISSION: m9_film + timescale_drone (p 0.5, s 1.0-1.4) + window-phase jitter on all platforms, trained on train + seal + val, nothing held out, final EMA weights kept."
+  },
+  "config_hash": "b8e7089e",
+  "reference_name": "m9_film",
+  "reference_version": 1
+}
